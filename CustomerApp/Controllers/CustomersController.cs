@@ -58,11 +58,15 @@ namespace CustomerApp.Controllers
                 if (customer == null)
                     return BadRequest();
 
-                if (_customersContext.Customers.Any(c => c.Email.ToLowerInvariant() == customer.Email.ToLowerInvariant()))
-                {
-                    ModelState.AddModelError("email", "Customer email already exists.");
-                    return BadRequest(ModelState);
-                }
+                
+                //if (_customersContext.Customers.Any(c => c.Email.ToLowerInvariant() == customer.Email.ToLowerInvariant()))
+                //{
+                //    ModelState.AddModelError("email", "Customer email already exists.");
+                //    return BadRequest(ModelState);
+                //}
+
+                customer.Updated = DateTime.UtcNow;
+                customer.Created = DateTime.UtcNow;
 
                 await _customersContext.Customers.AddAsync(customer);
                 customerId = await _customersContext.SaveChangesAsync();
@@ -90,7 +94,18 @@ namespace CustomerApp.Controllers
                 if (customerToUpdate == null)
                     return NotFound($"Customer with Id = {id} not found");
 
-                _customersContext.Customers.Update(customer);
+                customerToUpdate.Updated = DateTime.UtcNow;
+                if (customer?.FirstName != null)
+                customerToUpdate.FirstName = customer.FirstName;
+
+                if (customer?.LastName != null)
+                    customerToUpdate.LastName = customer.LastName;
+
+                if (customer?.Email != null)
+                    customerToUpdate.Email = customer.Email;
+                
+
+                _customersContext.Customers.Update(customerToUpdate);
                 await _customersContext.SaveChangesAsync();
 
                 return Ok();
