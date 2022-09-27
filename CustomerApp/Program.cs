@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace CustomerApp
 {
     public class Program
@@ -5,10 +7,13 @@ namespace CustomerApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
+            ConfigurationManager configuration = builder.Configuration;
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<CustomersContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("ConnStr"));
+            });
 
             var app = builder.Build();
 
