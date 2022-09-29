@@ -4,9 +4,21 @@ namespace CustomerApp
 {
     public class Program
     {
+        
         public static void Main(string[] args)
         {
+            string corsPolicy = "OpenCORSPolicy";
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(
+                  name: corsPolicy,
+                  builder => {
+                      builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+                  });
+            });
+
             ConfigurationManager configuration = builder.Configuration;
 
             builder.Services.AddControllersWithViews();
@@ -16,6 +28,8 @@ namespace CustomerApp
             });
 
             builder.Services.AddSwaggerGen();
+
+            
 
             var app = builder.Build();
 
@@ -34,6 +48,7 @@ namespace CustomerApp
             // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors(corsPolicy);
 
 
             app.MapControllerRoute(

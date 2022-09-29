@@ -14,3 +14,22 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.mat-table {
+  width: auto;
+  flex-wrap: nowrap;
+}
+
+  table td, table th {
+    padding: 2px 10px;
+  }
+
+  .mat-header-cell {
+      padding: 20px 10px !important;
+      
+  }
+

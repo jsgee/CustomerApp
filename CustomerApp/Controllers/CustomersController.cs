@@ -1,4 +1,5 @@
 ﻿using CustomerApp.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,7 @@ namespace CustomerApp.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [EnableCors("OpenCORSPolicy")]
     public class CustomersController : ControllerBase
     {
         private readonly CustomersContext _customersContext;
@@ -65,8 +67,8 @@ namespace CustomerApp.Controllers
                 //    return BadRequest(ModelState);
                 //}
 
-                customer.Updated = DateTime.UtcNow;
-                customer.Created = DateTime.UtcNow;
+                customer.Updated = DateTime.UtcNow.Date;
+                customer.Created = DateTime.UtcNow.Date;
 
                 await _customersContext.Customers.AddAsync(customer);
                 customerId = await _customersContext.SaveChangesAsync();
@@ -94,7 +96,7 @@ namespace CustomerApp.Controllers
                 if (customerToUpdate == null)
                     return NotFound($"Customer with Id = {id} not found");
 
-                customerToUpdate.Updated = DateTime.UtcNow;
+                customerToUpdate.Updated = DateTime.UtcNow.Date;
                 if (customer?.FirstName != null)
                 customerToUpdate.FirstName = customer.FirstName;
 
