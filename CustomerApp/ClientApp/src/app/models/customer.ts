@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export interface Customer {
   id: number;
   firstName: string;
@@ -5,15 +7,15 @@ export interface Customer {
   email: string;
   created?: Date;
   updated?: Date;
-  isEdit: boolean;
+  isEdit?: boolean;
 }
 
 export const CustomerColumns = [
  
   {
     key: 'id',
-    type: 'number',
-    label: 'Customer Id',
+    type: 'readonly',
+    label: 'Id',
     isEditable: false,
   },
   {

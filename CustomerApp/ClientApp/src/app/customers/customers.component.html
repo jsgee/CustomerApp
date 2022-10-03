@@ -1,0 +1,47 @@
+
+  <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+      The actual rendered columns are set as a property on the row definition" -->
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="firstName">
+      <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-form-field>
+          <input type="text" matInput [(ngModel)]="element.firstName" [disabled]="element.disabled" />
+        </mat-form-field>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="lastName">
+      <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="created">
+      <mat-header-cell *matHeaderCellDef> Created </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.created | date: 'shortDate''}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="updated">
+      <mat-header-cell *matHeaderCellDef> Updated </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.updated | date: 'short'}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row (click)="editElement(row)" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+

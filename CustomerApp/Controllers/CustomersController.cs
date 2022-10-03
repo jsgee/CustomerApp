@@ -19,7 +19,7 @@ namespace CustomerApp.Controllers
         {
             try
             {
-                return _customersContext.Customers != null && _customersContext.Customers.Any() ? Ok(await _customersContext.Customers.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToListAsync())
+                return _customersContext.Customers != null && _customersContext.Customers.Any() ? Ok(await _customersContext.Customers.OrderBy(x => x.Id).ToListAsync())
               : NoContent();
             }
             catch (Exception)
@@ -67,8 +67,8 @@ namespace CustomerApp.Controllers
                 //    return BadRequest(ModelState);
                 //}
 
-                customer.Updated = DateTime.UtcNow.Date;
-                customer.Created = DateTime.UtcNow.Date;
+                customer.Updated = DateTime.UtcNow;
+                customer.Created = DateTime.UtcNow;
 
                 await _customersContext.Customers.AddAsync(customer);
                 customerId = await _customersContext.SaveChangesAsync();
@@ -96,7 +96,7 @@ namespace CustomerApp.Controllers
                 if (customerToUpdate == null)
                     return NotFound($"Customer with Id = {id} not found");
 
-                customerToUpdate.Updated = DateTime.UtcNow.Date;
+                customerToUpdate.Updated = DateTime.UtcNow;
                 if (customer?.FirstName != null)
                 customerToUpdate.FirstName = customer.FirstName;
 
