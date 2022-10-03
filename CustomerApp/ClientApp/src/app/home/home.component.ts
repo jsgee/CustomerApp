@@ -7,6 +7,7 @@ import { LuxonModule } from 'luxon-angular';
 import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { SessionStorageService } from '../services/session-storage.service';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 export class HomeComponent {
   constructor(public dialog: MatDialog,
     private customerService: CustomerService,
+    private sessionStorage: SessionStorageService,
     private changeDetectorRefs: ChangeDetectorRef,
     private datePipe: DatePipe,
     private fb: FormBuilder) {
@@ -36,7 +38,8 @@ export class HomeComponent {
   }
 
   getCustomers() {
-    this.customerService.getCustomers().subscribe((res: any) => {
+    this.customerService.getCustomers().subscribe((res: Customer[]) => {
+      res = this.setIsLastAddedRow(res);
       this.dataSource.data = res;
       this.changeDetectorRefs.detectChanges();
     });
@@ -51,9 +54,33 @@ export class HomeComponent {
     };
     this.customerService.addCustomer(newCustomer).subscribe(() => {
       newCustomer.isEdit = false;
+      this.customerForm.reset();
       this.showCustomerForm = false;
+      this.unsetIsLastAddedRow();
+      this.sessionStorage.setSessionItem("email", newCustomer.email);
       this.getCustomers();
     });
+  }
+
+  setIsLastAddedRow(customers: Customer[]): Customer[] {
+    if (this.sessionStorage.length) {
+      let lastAddedEmail = this.sessionStorage.getSessionItem("email");
+      let lastAddedCustomer = customers.find(c => c.email === lastAddedEmail);
+      if (lastAddedCustomer !== undefined) {
+        lastAddedCustomer.isLastAddedRow = true;
+      }
+    }
+
+    return customers;
+  }
+
+  unsetIsLastAddedRow(): void {
+    let lastAddedCustomerEmail = this.sessionStorage.getSessionItem("email");
+    let lastAddedCustomer = this.dataSource.data.find(c => c.email === lastAddedCustomerEmail);
+    if (lastAddedCustomer !== undefined) {
+      lastAddedCustomer.isLastAddedRow = false;
+    }
+    this.sessionStorage.clearSessionStorage();
   }
 
   editRow(row: Customer) {

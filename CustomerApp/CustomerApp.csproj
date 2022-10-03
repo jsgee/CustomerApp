@@ -34,12 +34,14 @@
     <None Remove="ClientApp\src\app\material.module.ts" />
     <None Remove="ClientApp\src\app\models\customer.ts" />
     <None Remove="ClientApp\src\app\services\customer.service.ts" />
+    <None Remove="ClientApp\src\app\services\session-storage.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\material.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\customer.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\customer.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\session-storage.service.ts" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

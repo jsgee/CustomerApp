@@ -28,14 +28,25 @@ th.mat-header-cell, mat-cell, td.mat-footer-cell {
   flex-wrap: nowrap;
 }
 
-
-
-
 .w-20{
     width: 20px;
 }
 .w-75 {
   width: 75px;
+}
+
+.highlight {
+  animation: highlight 3s;
+}
+
+@keyframes highlight {
+  0% {
+    background: red
+  }
+
+  100% {
+    background: none;
+  }
 }
 
 .w-100 {
