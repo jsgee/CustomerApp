@@ -48,8 +48,6 @@ namespace CustomerApp.Controllers
             }
         }
 
-
-
         [HttpPost]
         public async Task<ActionResult<Customer>> CreateCustomer([FromBody] Customer customer)
         {
@@ -59,13 +57,6 @@ namespace CustomerApp.Controllers
             {
                 if (customer == null)
                     return BadRequest();
-
-                
-                //if (_customersContext.Customers.Any(c => c.Email.ToLowerInvariant() == customer.Email.ToLowerInvariant()))
-                //{
-                //    ModelState.AddModelError("email", "Customer email already exists.");
-                //    return BadRequest(ModelState);
-                //}
 
                 customer.Updated = DateTime.UtcNow;
                 customer.Created = DateTime.UtcNow;
@@ -96,6 +87,7 @@ namespace CustomerApp.Controllers
                 if (customerToUpdate == null)
                     return NotFound($"Customer with Id = {id} not found");
 
+                // normally I'd use automapper here 
                 customerToUpdate.Updated = DateTime.UtcNow;
                 if (customer?.FirstName != null)
                 customerToUpdate.FirstName = customer.FirstName;

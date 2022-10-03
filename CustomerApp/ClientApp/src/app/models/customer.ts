@@ -8,6 +8,7 @@ export interface Customer {
   created?: Date;
   updated?: Date;
   isEdit?: boolean;
+  isLastAddedRow?: boolean;
 }
 
 export const CustomerColumns = [
