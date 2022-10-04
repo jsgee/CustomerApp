@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, AfterViewInit } from '@angular/core';
 import { Customer, CustomerColumns } from '../models/customer';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SessionStorageService } from '../services/session-storage.service';
+import { MatPaginator } from '@angular/material/paginator';
 
 
 @Component({
@@ -31,16 +32,28 @@ export class HomeComponent {
   displayedColumns: string[] = CustomerColumns.map((col) => col.key);
   columnsSchema: any = CustomerColumns;
   dataSource = new MatTableDataSource<Customer>();
-  showCustomerForm: boolean = false; 
+  isDataSourceLoading: boolean = true; 
+  showCustomerForm: boolean = false;
+
+
+  @ViewChild('paginator') paginator!: MatPaginator;
+  pageSizes:number[] = [10, 20, 50];
    
   async ngOnInit() {
+    this.unsetIsLastAddedRow();
     await this.getCustomers();
+  }
+
+  ngAfterViewInit() {
+    this.sessionStorage.clearSessionStorage();
   }
 
   getCustomers() {
     this.customerService.getCustomers().subscribe((res: Customer[]) => {
       res = this.setIsLastAddedRow(res);
       this.dataSource.data = res;
+      this.dataSource.paginator = this.paginator;
+      this.isDataSourceLoading = false; 
       this.changeDetectorRefs.detectChanges();
     });
   }
@@ -57,6 +70,7 @@ export class HomeComponent {
       this.customerForm.reset();
       this.showCustomerForm = false;
       this.unsetIsLastAddedRow();
+      this.isDataSourceLoading = true; 
       this.sessionStorage.setSessionItem("email", newCustomer.email);
       this.getCustomers();
     });
@@ -84,8 +98,11 @@ export class HomeComponent {
   }
 
   editRow(row: Customer) {
-      this.customerService.updateCustomer(row).subscribe(() => {
-        row.isEdit = false
+    this.customerService.updateCustomer(row).subscribe(() => {
+      this.unsetIsLastAddedRow();
+        row.isEdit = false;
+      this.isDataSourceLoading = true;
+      this.sessionStorage.setSessionItem("email", row.email);
         this.getCustomers();
       });
   }

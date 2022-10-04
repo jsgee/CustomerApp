@@ -34,7 +34,7 @@
            *ngIf="!element.isEdit">
         <div class="btn-edit" *ngSwitchCase="'isEdit'">
           <button mat-button (click)="element.isEdit = !element.isEdit" [disabled]="showCustomerForm">
-            Edit
+            <i class="bi bi-pencil" style="color: rgb(0, 0, 255);"></i>
           </button>
         </div>
         <span *ngSwitchCase="'date'">
@@ -46,7 +46,7 @@
       </div>
       <div [ngSwitch]="col.type" *ngIf="element.isEdit ">
         <div class="btn-edit" *ngSwitchCase="'isEdit'">
-          <button mat-button (click)="editRow(element)">Done</button>
+          <button mat-button (click)="editRow(element)"><span id="boot-icon" class="bi bi-save" style="color: rgb(0, 0, 255);"></span></button>
         </div>
         <mat-form-field *ngSwitchCase="'date'" appearance="fill">
           <mat-label>Choose a date</mat-label>
@@ -67,3 +67,12 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'highlight': row.isLastAddedRow}"></tr>
 </table>
+<mat-paginator #paginator
+               [pageSizeOptions]="pageSizes"
+               showFirstLastButtons>
+</mat-paginator>
+<mat-card *ngIf="isDataSourceLoading" style="display: flex; justify-content: center; align-items: center">
+  <mat-progress-spinner color="primary"
+                        mode="indeterminate">
+  </mat-progress-spinner>
+</mat-card>

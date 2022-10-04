@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import "~bootstrap-icons/font/bootstrap-icons.css";
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
@@ -36,12 +36,13 @@ th.mat-header-cell, mat-cell, td.mat-footer-cell {
 }
 
 .highlight {
-  animation: highlight 3s;
+  animation: highlight 5s;
 }
 
 @keyframes highlight {
   0% {
-    background: red
+    background: purple;
+    opacity: 0.33;
   }
 
   100% {
